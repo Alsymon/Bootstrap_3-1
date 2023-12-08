@@ -1,165 +1,124 @@
-console.log("hello world!!!");
+let productList = [];
+
+function registerUser() {
+    let firstname = document.querySelector("#firstname");
+    let lastname = document.querySelector("#lastname");
+    let email = document.querySelector("#email");
+    let password = document.querySelector("#password");
+    let maleGender = document.querySelector("#maleGender");
+    let femaleGender = document.querySelector("#femaleGender");
+    let otherGender = document.querySelector("#otherGender");
+    let address = document.querySelector("#homeaddress");
+    let age = document.querySelector("#age");
+    let user = {
+        firstname: firstname.value,
+        lastname: lastname.value,
+        email: email.value,
+        password: password.value,
+        userGender: maleGender.checked ? "Male" : femaleGender.checked ? "Female" : otherGender.checked ? "OtherGender": "",
+        address: address.value,
+        age: age.value
+    };
+
+    if (!user.email || !user.firstname || !user.lastname || !user.password) {
+        return alert("All fields are required");
+    }
+
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("registeredUser", JSON.stringify(user));
+}
+
 let btnRegister = document.querySelector("#btnRegister");
 
 if (btnRegister) {
-
-    function registerUser() {
-
-        let firstname = document.querySelector("#firstname");
-        let lastname = document.querySelector("#lastname");
-        let email = document.querySelector("#email");
-        let password = document.querySelector("#password");
-        let maleGender = document.querySelector("#maleGender");
-        let femaleGender = document.querySelector("#femaleGender");
-        let otherGender = document.querySelector("#otherGender");
-        let address = document.querySelector("#homeaddress");
-        let age = document.querySelector("#age");
-        let user = {
-            firstname: firstname.value,
-            lastname: lastname.value,
-            email: email.value,
-            password: password.value,
-            userGender: maleGender.checked ? "Male" : femaleGender.checked ? "Female" : "",
-            address: address.value,
-            age: age.value
-        };
-
-        if (!user.email) {
-            return alert("Email is required");
-        } else if (!user.firstname) {
-            return alert("Firstname is required");
-        } else if (!user.lastname) {
-            return alert("Lastname is required");
-        } else if (!user.password) {
-            return alert("Password is required");
-        }
-
-        localStorage.setItem("user", JSON.stringify(user));
-
-        console.log("User registered", user);
-    }
-
     btnRegister.addEventListener("click", () => {
         registerUser();
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    let btnAddProduct = document.querySelector("#btnAddProduct");
+btnAddProduct = document.getElementById('btnAddProduct');
 
-    if (btnAddProduct) {
-        btnAddProduct.addEventListener("click", function () {
-            let productName = document.querySelector("#productName");
-            let productDescription = document.querySelector("#productDescription");
-            let productPrice = document.querySelector("#productPrice");
+if (btnAddProduct) {
+    btnAddProduct.addEventListener("click", function () {
+        let productName = document.querySelector("#productName");
+        let productDescription = document.querySelector("#productDescription");
+        let productPrice = document.querySelector("#productPrice");
+        let productImage = document.querySelector("#fileInput"); // Use file input with id "fileInput"
 
-            let product = {
-                productName: productName.value,
-                productDescription: productDescription.value,
-                productPrice: productPrice.value,
-            };
+        let productImageValue = productImage.files.length > 0 ? productImage.files[0].name : "";
 
-            if (!product.productName || !product.productDescription || !product.productPrice) {
-                return alert("All fields are required");
-            }
+        let product = {
+            productName: productName.value,
+            productDescription: productDescription.value,
+            productPrice: productPrice.value,
+            productImage: productImageValue,
+        };
 
-           
-            console.log("Product added", product);
+        if (!product.productName || !product.productDescription || !product.productPrice || !product.productImage) {
+            return alert("All fields are required");
+        }
 
+        console.log("Product added", product);
 
-            productName.value = "";
-            productDescription.value = "";
-            productPrice.value = "";
+        let modalElement = new bootstrap.Modal(document.getElementById("exampleModal"));
+        modalElement.hide();
 
-            let modal = new bootstrap.Modal(document.getElementById("exampleModal"));
-            modal.hide();
-        });
-    }
-});
+        productName.value = "";
+        productDescription.value = "";
+        productPrice.value = "";
+        productImage.value = "";
+        productList.push(product);
 
+        localStorage.setItem("productList", JSON.stringify(productList));
+    });
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-    let deleteButtons = document.querySelectorAll(".btn-danger");
+deleteButtons = document.querySelectorAll(".btn-danger");
 
-    deleteButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
+deleteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        let productCard = button.closest(".row1, .row2, .row3");
 
-            let productCard = button.closest(".row1, .row2, .row3");
+        if (productCard) {
+            productCard.remove();
 
-            if (productCard) {
-                productCard.remove();
+            productId = productCard.querySelector('.btn-outline-success').getAttribute('data-product-id');
+            updatedProductList = productList.filter(product => product.id !== productId);
+            productList = updatedProductList;
 
-            }
-        });
+            localStorage.setItem("productList", JSON.stringify(productList));
+        }
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+function populateProductDropdown() {
+     updateProductDropdown = document.getElementById('updateProductDropdown');
 
-    const productList = [
-        { id: 'product1', name: 'Product 1', description: 'Description 1', price: '100', image: 'product1.jpg' },
-        { id: 'product2', name: 'Product 2', description: 'Description 2', price: '200', image: 'product2.jpg' },
-        { id: 'product3', name: 'Product 3', description: 'Description 3', price: '300', image: 'product3.jpg' }
-    ];
+    productList.forEach(product => {
+        option = document.createElement('option');
+        option.value = product.id;
+        option.textContent = product.productName;
+        updateProductDropdown.appendChild(option);
+    });
+}
 
+function handleUpdateProduct() {
+      selectedProductId = document.getElementById('updateProductDropdown').value;
+      updatedProductName = document.getElementById('updatedProductName').value;
+      updatedProductDescription = document.getElementById('updatedProductDescription').value;
+      updatedProductPrice = document.getElementById('updatedProductPrice').value;
 
-    function populateProductDropdown() {
-        const updateProductDropdown = document.getElementById('updateProductDropdown');
+      updatedProductIndex = productList.findIndex(product => product.id === selectedProductId);
 
-        productList.forEach(product => {
-            const option = document.createElement('option');
-            option.value = product.id;
-            option.textContent = product.name;
-            updateProductDropdown.appendChild(option);
-        });
+    if (updatedProductIndex !== -1) {
+        productList[updatedProductIndex].productName = updatedProductName;
+        productList[updatedProductIndex].description = updatedProductDescription;
+        productList[updatedProductIndex].price = updatedProductPrice;
+
+        localStorage.setItem("productList", JSON.stringify(productList));
     }
+}
 
+populateProductDropdown();
 
-    function handleAddProduct() {
-
-        const productName = document.getElementById('productName').value;
-        const productDescription = document.getElementById('productDescription').value;
-        const productPrice = document.getElementById('productPrice').value;
-        const fileInput = document.getElementById('fileInput');
-        const productImage = fileInput.files.length > 0 ? fileInput.files[0].name : 'default.jpg';
-
-        const newProduct = {
-            id: `product${productList.length + 1}`,
-            name: productName,
-            description: productDescription,
-            price: productPrice,
-            image: productImage
-        };
-
-        productList.push(newProduct);
-
-        console.log('Product added:', newProduct);
-    }
-
-
-    function handleUpdateProduct() {
-
-        const selectedProductId = document.getElementById('updateProductDropdown').value;
-        const updatedProductName = document.getElementById('updatedProductName').value;
-        const updatedProductDescription = document.getElementById('updatedProductDescription').value;
-        const updatedProductPrice = document.getElementById('updatedProductPrice').value;
-        const updatedFileInput = document.getElementById('updatedFileInput');
-        const updatedProductImage = updatedFileInput.files.length > 0 ? updatedFileInput.files[0].name : 'default.jpg';
-
-        const updatedProductIndex = productList.findIndex(product => product.id === selectedProductId);
-
-        if (updatedProductIndex !== -1) {
-            productList[updatedProductIndex].name = updatedProductName;
-            productList[updatedProductIndex].description = updatedProductDescription;
-            productList[updatedProductIndex].price = updatedProductPrice;
-            productList[updatedProductIndex].image = updatedProductImage;
-
-            console.log('Product updated:', productList[updatedProductIndex]);
-        }
-    }
-
-    populateProductDropdown();
-
-    document.getElementById('btnAddProduct').addEventListener('click', handleAddProduct);
-    document.getElementById('btnUpdateProduct').addEventListener('click', handleUpdateProduct);
-});
+document.getElementById('btnUpdateProduct').addEventListener('click', handleUpdateProduct);
