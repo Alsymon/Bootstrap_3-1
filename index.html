@@ -161,7 +161,7 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                       Add a Product
                   </button>
-                  <button class="btn btn-danger">Delete Product</button>
+                  <button class="btn btn-danger" id = "btnDelete">Delete Product</button>
                   <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateProductModal">
                     Update Product
                 </button>
@@ -169,54 +169,50 @@
                       Logout
                   </a>
                     
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="false">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add a Product</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="form-outline mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
-                                        </div>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text alert alert-secondary">Description</span>
-                                            </div>
-                                            <input type="text" id="productDescription" class="form-control form-control-lg">
-                                        </div>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text alert alert-secondary">$</span>
-                                            </div>
-                                            <input type="text" id="productPrice" class="form-control form-control-lg">
-                                            <span class="input-group-text alert alert-secondary">.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <label for="fileInput">Product Image</label>
-                                        <div class="input-group">
-                                            <input type="file" class="form-control-file form-control" id="fileInput" name="fileInput">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <div class="d-flex justify-content-end pt-3">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-warning btn-lg ms-2" id="btnAddProduct">Add Product</button>
-                            </div>
-                        </div>
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add a Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <label for="productName" class="form-label">Product Name:</label>
+                <div class="form-outline mb-4">
+                    <input type="text" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
+                </div>
+
+                <label for="productDescription" class="form-label">Product Description:</label>
+                <div class="form-outline mb-4">
+                    <input type="text" id="productDescription" class="form-control form-control-lg" placeholder="Product Description" />
+                </div>
+
+                <label for="productPrice" class="form-label">Product Price:</label>
+                <div class="form-outline mb-4">
+                    <div class="input-group">
+                        <span class="input-group-text alert alert-secondary">$</span>
+                        <input type="text" id="productPrice" class="form-control form-control-lg">
+                        <span class="input-group-text alert alert-secondary">.00</span>
                     </div>
                 </div>
+
+                <label for="fileInput" class="form-label">Product Image:</label>
+                <div class="form-outline mb-4">
+                    <div class="input-group">
+                        <input type="file" class="form-control-file form-control" id="fileInput" name="fileInput">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="btnAddProduct">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                 
                   </div>
           
@@ -291,10 +287,7 @@
                     </div>  
                     
       </div>
-      <div id="productContainer" class="container">
-        <!-- Product cards will be dynamically added here -->
-      </div>
-      <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
