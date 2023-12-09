@@ -1,0 +1,154 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    background: url('../assets/photo2.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Top Navigation Bar */
+.navbar {
+    background-color: #343a40;
+    margin-bottom: 20px;
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #d8d8d8;
+}
+
+/* User Information Container */
+#user-info-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#user-picture {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+#user-details p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+#edit-button,
+#delete-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+#edit-button:hover,
+#delete-button:hover {
+    background-color: #0056b3;
+}
+
+/* Edit Modal */
+#edit-modal {
+    display: none;
+}
+
+#edit-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#save-button,
+#cancel-edit-button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+#save-button:hover,
+#cancel-edit-button:hover {
+    background-color: #218838;
+}
+
+/* Delete Modal */
+#delete-modal {
+    display: none;
+}
+
+#delete-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#confirm-delete-button,
+#cancel-delete-button {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+#confirm-delete-button:hover,
+#cancel-delete-button:hover {
+    background-color: #c82333;
+}
+
+img {
+    width: 10%;
+    height: 10%;
+}
+.userinf{
+  
+    background-color: #d6d6d6;
+    margin: 2%;
+    border: none;
+    padding: 30px;
+}
