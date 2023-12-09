@@ -1,45 +1,9 @@
 let productList = [
-        { id: 'product1', name: 'Product 1', description: 'Description 1', price: '100', image: 'product1.jpg' },
-        { id: 'product2', name: 'Product 2', description: 'Description 2', price: '200', image: 'product2.jpg' },
-        { id: 'product3', name: 'Product 3', description: 'Description 3', price: '300', image: 'product3.jpg' }
-    ];
+    { id: 'product1', name: 'Product 1', description: 'Description 1', price: '100', image: 'product1.jpg' },
+    { id: 'product2', name: 'Product 2', description: 'Description 2', price: '200', image: 'product2.jpg' },
+    { id: 'product3', name: 'Product 3', description: 'Description 3', price: '300', image: 'product3.jpg' }
+];
 
-
-function registerUser() {
-    let firstname = document.querySelector("#firstname");
-    let lastname = document.querySelector("#lastname");
-    let email = document.querySelector("#email");
-    let password = document.querySelector("#password");
-    let maleGender = document.querySelector("#maleGender");
-    let femaleGender = document.querySelector("#femaleGender");
-    let otherGender = document.querySelector("#otherGender");
-    let address = document.querySelector("#homeaddress");
-    let age = document.querySelector("#age");
-    let user = {
-        firstname: firstname.value,
-        lastname: lastname.value,
-        email: email.value,
-        password: password.value,
-        userGender: maleGender.checked ? "Male" : femaleGender.checked ? "Female" : otherGender.checked ? "OtherGender": "",
-        address: address.value,
-        age: age.value
-    };
-
-    if (!user.email || !user.firstname || !user.lastname || !user.password) {
-        return alert("All fields are required");
-    }
-
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("registeredUser", JSON.stringify(user));
-}
-
-let btnRegister = document.querySelector("#btnRegister");
-
-if (btnRegister) {
-    btnRegister.addEventListener("click", () => {
-        registerUser();
-    });
-}
 
 btnAddProduct = document.getElementById('btnAddProduct');
 

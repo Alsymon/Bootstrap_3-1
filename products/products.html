@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<style>
+  body {
+    background: #e2eaef;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .container {
+    margin: 10px;
+    display: flex;
+  }
+
+  .row1,
+  .row2,
+  .row3 {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin: 30px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .btn.btn-outline-primary {
+    cursor: pointer;
+    font-size: 16px;
+    color: #abb0b8;
+    border: 1px solid transparent;
+  }
+
+  .card-footer.d-flex.justify-content-between {
+    width: 340px;
+  }
+
+  .addtocart {
+    display: block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #00a854;
+    border: 1px solid #00a854;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    width: 130px;
+    height: 40px;
+    text-align: center;
+    position: absolute;
+  }
+
+  .addtocart:hover {
+    background-color: #00a854;
+    color: #fff;
+  }
+
+  #profile {
+    margin-left: 20px;
+  }
+button{
+    margin-left: 5px;
+}
+.login{
+    padding-left: 5px;
+}
+    </style>
+  </head>
+
+
+  <body>
+    <div class="">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="../index.html">Electronics Shop</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                  <li class="nav-item">
+                    <form class="d-flex" role="search">
+                      <input id="searchInput" class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
+
+                      <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                  </li>
+                  <a class="navbar-brand" id="profile" href="../products/products.html">Products</a>
+                  <a class="navbar-brand" id="profile" href="../profile/profile.html">Profile</a>
+                  <li class="nav-item">
+                    <a hidden class="nav-link disabled" aria-disabled="true">Disabled</a>
+                  </li>
+                </ul>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add a Product
+                </button>
+                <button class="btn btn-danger" id = "btnDelete">Delete Product</button>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateProductModal">
+                  Update Product
+              </button>
+                <div>
+  <a class="login" href="../login/login.html">
+                    Logout
+                </a>
+                  
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addProductModalLabel">Add a Product</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+              <label for="productName" class="form-label">Product Name:</label>
+              <div class="form-outline mb-4">
+                  <input type="text" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
+              </div>
+
+              <label for="productDescription" class="form-label">Product Description:</label>
+              <div class="form-outline mb-4">
+                  <input type="text" id="productDescription" class="form-control form-control-lg" placeholder="Product Description" />
+              </div>
+
+              <label for="productPrice" class="form-label">Product Price:</label>
+              <div class="form-outline mb-4">
+                  <div class="input-group">
+                      <span class="input-group-text alert alert-secondary">$</span>
+                      <input type="text" id="productPrice" class="form-control form-control-lg">
+                      <span class="input-group-text alert alert-secondary">.00</span>
+                  </div>
+              </div>
+
+              <label for="fileInput" class="form-label">Product Image:</label>
+              <div class="form-outline mb-4">
+                  <div class="input-group">
+                      <input type="file" class="form-control-file form-control" id="fileInput" name="fileInput">
+                  </div>
+              </div>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success" id="btnAddProduct">Add Product</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+              
+                </div>
+        
+              </div>
+            </div>
+          </nav>
+          
+    </div>
+    <div class="container">
+      <div class="row1">
+        
+        <div class="img-box" id ="productImage">
+          <img src="https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair.png" width = "100%" alt="Laptop">
+          <div class="card-body">
+            <h4>Apple Macbook Air M1</h4>		
+            <p>The Apple Macbook Air M1 2020 meets the build quality and provides a reliable performance within its budget segment. Weighting 1.29kg and has a screen resolution of 2560 x 1600pixels, it is great for long hours of entertainment and work.</p>
+          </div>
+          
+          <div class="card-footer d-flex justify-content-between">
+              <p  >Price:<button type="button" class="btn btn-dark">₱61,551</button>
+          <div>
+            <button type="button" class="btn btn-outline-success">Add to Cart</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#productInfoModal1">See Info</button>
+        </div>
+              </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row2">
+            <div class="img-box">
+              <img src="https://i1.wp.com/laptopmedia.com/wp-content/uploads/2020/01/2-3-e1578393693450.png?fit=985%2C656&ssl=1" width = "100%" alt="Laptop">
+              <div class="card-body">
+                <h4>ASUS ROG Zephyrus G14 GA401</h4>		
+                <p>ASUS’s ROG Zephyrus G14 GA401 laptop is the ideal gaming laptop for you. In terms of display, its 14" display has a screen resolution of 2560 x 1440pixels. In terms of weight, it weighs only 1.7kg. Scroll down below to compare the price of this ASUS laptop and check out its specs!</p>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                  <p   >Price:<button type="button" class="btn btn-dark">₱36,834</button>
+                    <div>                         
+                      <button type="button" class="btn btn-outline-success">Add to Cart</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#productInfoModal2">See Info</button>
+                    </div>
+                  </p>
+                  </div>
+                </div>
+              </div>  
+              <div class="row3">
+                <div class="img-box">
+                  <img src="https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png" width="60%" height ="100%" alt="Cellphone">
+                  <div class="card-body">
+                    <h4>Apple iPhone 13</h4>		
+              <p>The cheapest price of Apple iPhone 13 in Philippines is PHP 28950. The Apple iPhone 13 features a 6.1" display, 12 + 12MP back camera, 12MP front camera, and a 3240mAh battery capacity. It is powered by the Hexa Core CPU and runs on iOS.</p>
+                  </div>
+                  <div class="card-footer d-flex justify-content-between">
+                      <p   >Price:<button type="button" class="btn btn-dark">₱42,990</button>
+                  <div>                         
+                    <button type="button" class="btn btn-outline-success">Add to Cart</button>
+                  </div>
+                  <div>
+                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#productInfoModal3">See Info</button>  </div>
+                  <div>
+                    
+                  </div>
+                      </p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+    </div>
+
+    
+<div class="modal fade" id="productInfoModal1" tabindex="-1" aria-labelledby="productInfoModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productInfoModalLabel1">Product Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Description: The Apple Macbook Air M1 2020 meets the build quality and provides reliable performance within its budget segment. Weighing 1.29kg and with a screen resolution of 2560 x 1600 pixels, it is great for long hours of entertainment and work.</p>
+                <p>Price: ₱61,551</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success">Buy Now</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <!-- Second Modal -->
+  <div class="modal fade" id="productInfoModal2" tabindex="-1" aria-labelledby="productInfoModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productInfoModalLabel2">Product Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Description: ASUS’s ROG Zephyrus G14 GA401 laptop is the ideal gaming laptop for you. In terms of display, its 14" display has a screen resolution of 2560 x 1440 pixels. In terms of weight, it weighs only 1.7kg. Scroll down below to compare the price of this ASUS laptop and check out its specs!</p>
+                <p>Price: ₱36,834</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success">Buy Now</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+    <div class="modal fade" id="productInfoModal3" tabindex="-1" aria-labelledby="productInfoModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productInfoModalLabel">Product Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Description: The Apple iPhone 13 features a 6.1" display, 12 + 12MP back camera, 12MP front camera, and a 3240mAh battery capacity. It is powered by the Hexa Core CPU and runs on iOS.</p>
+            <p>Price: ₱42,990</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success">Buy Now</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+              <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 
+                  <label for="updateProductDropdown" class="form-label">Select Product to Update:</label>
+                  <select class="form-select mb-3" id="updateProductDropdown">
+
+                  </select>
+  
+                 
+                  <div class="form-outline mb-4">
+                      <input type="text" id="updatedProductName" class="form-control form-control-lg" placeholder="Updated Product Name"/>
+                  </div>
+                  <div class="form-outline mb-4">
+                      <input type="text" id="updatedProductDescription" class="form-control form-control-lg" placeholder="Updated Product Description"/>
+                  </div>
+                  <div class="form-outline mb-4">
+                      <input type="text" id="updatedProductPrice" class="form-control form-control-lg" placeholder="Updated Product Price"/>
+                  </div>
+                  <div class="form-outline mb-4">
+                      <label for="updatedFileInput">Updated Product Image</label>
+                      <input type="file" class="form-control-file form-control" id="updatedFileInput" name="updatedFileInput">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success" id="btnUpdateProduct">Update Product</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+ <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </body>
