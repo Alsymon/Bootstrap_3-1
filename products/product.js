@@ -4,7 +4,6 @@ let productList = [
     { id: 'product3', name: 'Product 3', description: 'Description 3', price: '300', image: 'product3.jpg' }
 ];
 
-
 btnAddProduct = document.getElementById('btnAddProduct');
 
 if (btnAddProduct) {
@@ -17,13 +16,14 @@ if (btnAddProduct) {
         let productImageValue = productImage.files.length > 0 ? productImage.files[0].name : "";
 
         let product = {
-            productName: productName.value,
-            productDescription: productDescription.value,
-            productPrice: productPrice.value,
-            productImage: productImageValue,
+            id: 'product' + (productList.length + 1), // Assuming a simple way to generate IDs
+            name: productName.value,
+            description: productDescription.value,
+            price: productPrice.value,
+            image: productImageValue,
         };
 
-        if (!product.productName || !product.productDescription || !product.productPrice || !product.productImage) {
+        if (!product.name || !product.description || !product.price || !product.image) {
             return alert("All fields are required");
         }
 
@@ -42,6 +42,8 @@ if (btnAddProduct) {
     });
 }
 
+// The rest of your code for deleting and updating products remains unchanged
+
 let deleteButtons = document.querySelectorAll(".btn-danger");
 
     deleteButtons.forEach(function (button) {
@@ -56,44 +58,26 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
         });
     });
 
+function updateProduct(productId) {
+    // Assuming you have input fields in your modal with IDs like "updatedProductName", "updatedProductDescription", etc.
+    let updatedName = document.getElementById('updatedProductName').value;
+    let updatedDescription = document.getElementById('updatedProductDescription').value;
+    let updatedPrice = document.getElementById('updatedProductPrice').value;
 
-function populateProductDropdown() {
-    let updateProductDropdown = document.getElementById('updateProductDropdown');
+    // Update the content of the product card directly
+    let productCard = document.getElementById(productId);
+    if (productCard) {
+        productCard.querySelector('.card-body h4').innerText = updatedName;
+        productCard.querySelector('.card-body p').innerText = updatedDescription;
 
-    productList.forEach(product => {
-        let option = document.createElement('option');
-        option.value = product.id;
-        option.textContent = product.name; 
-        updateProductDropdown.appendChild(option);
-    });
-}
-
-function handleUpdateProduct() {
-    let selectedProductId = document.getElementById('updateProductDropdown').value;
-    let updatedProductName = document.getElementById('updatedProductName');
-    let updatedProductDescription = document.getElementById('updatedProductDescription');
-    let updatedProductPrice = document.getElementById('updatedProductPrice');
-    let updatedFileInput = document.getElementById('updatedFileInput');
-    let updatedProductImage = updatedFileInput.files.length > 0 ? updatedFileInput.files[0].name : 'default.jpg';
-
-    let updatedProductIndex = productList.findIndex(product => product.id === selectedProductId);
-
-    if (updatedProductIndex !== -1) {
-        productList[updatedProductIndex].name = updatedProductName.value;
-        productList[updatedProductIndex].description = updatedProductDescription.value;
-        productList[updatedProductIndex].price = updatedProductPrice.value;
-        productList[updatedProductIndex].image = updatedProductImage;
-
-        updatedProductName.value = "";
-        updatedProductDescription.value = "";
-        updatedProductPrice.value = "";
-        updatedFileInput.value = ""; // Clear the file input
-        console.log('Product updated:', productList[updatedProductIndex]);
-        localStorage.setItem("productList", JSON.stringify(productList));
+        // If you have a price element in your card, update it
+        let priceElement = productCard.querySelector('.price');
+        if (priceElement) {
+            priceElement.innerText = updatedPrice;
+        }
     }
+
+    // Close the update modal
+    const updateProductModal = new bootstrap.Modal(document.getElementById('updateProductModal'));
+    updateProductModal.hide();
 }
-
-document.getElementById('btnAddProduct').addEventListener('click', btnAddProduct);
-document.getElementById('btnUpdateProduct').addEventListener('click', handleUpdateProduct);
-
-populateProductDropdown();

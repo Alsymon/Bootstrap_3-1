@@ -174,7 +174,7 @@ button{
           
     </div>
     <div class="container">
-      <div class="row1">
+      <div class="row1"  id="productRow1">
         
         <div class="img-box" id ="productImage">
           <img src="https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair.png" width = "100%" alt="Laptop">
@@ -186,9 +186,8 @@ button{
           <div class="card-footer d-flex justify-content-between">
             <div class="d-flex flex-column align-items-center mb-3">
               <button class="btn btn-danger" id="btnDelete">Delete Product</button>
-              <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal">
-                  Update Product
-              </button>
+              <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal('productRow1')">Update Product</button>
+
           </div>
       
           <!-- Add to Cart and See Info buttons -->
@@ -199,7 +198,7 @@ button{
           </div>
           </div>
           </div>
-          <div class="row2">
+          <div class="row2"  id="productRow2">
             <div class="img-box">
               <img src="https://i1.wp.com/laptopmedia.com/wp-content/uploads/2020/01/2-3-e1578393693450.png?fit=985%2C656&ssl=1" width = "100%" alt="Laptop">
               <div class="card-body">
@@ -210,9 +209,8 @@ button{
                 <div class="card-footer d-flex justify-content-between">
                   <div class="d-flex flex-column align-items-center mb-3">
                     <button class="btn btn-danger" id="btnDelete">Delete Product</button>
-                    <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal">
-                        Update Product
-                    </button>
+                    <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal('productRow1')">Update Product</button>
+
                 </div>
             
                 <!-- Add to Cart and See Info buttons -->
@@ -224,7 +222,7 @@ button{
                 </div>
               </div>  
               </div>
-              <div class="row3">
+              <div class="row3" id="productRow3">
                 <div class="img-box">
                   <img src="https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png" width="60%" height ="100%" alt="Cellphone">
                   <div class="card-body">
@@ -234,10 +232,9 @@ button{
                   <div class="card-footer d-flex justify-content-between">
                     <div class="card-footer d-flex justify-content-between">
                       <div class="d-flex flex-column align-items-center mb-3">
-                        <button class="btn btn-danger" id="btnDelete">Delete Product</button>
-                        <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal">
-                            Update Product
-                        </button>
+                        <button class="btn btn-danger">Delete Product</button>
+<button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal('productRow1')">Update Product</button>
+
                     </div>
                 
                     <!-- Add to Cart and See Info buttons -->
@@ -311,43 +308,36 @@ button{
       </div>
     </div>
   
-  
-              <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                 
-                  <label for="updateProductDropdown" class="form-label">Select Product to Update:</label>
-                  <select class="form-select mb-3" id="updateProductDropdown">
-
-                  </select>
-  
-                 
-                  <div class="form-outline mb-4">
-                      <input type="text" id="updatedProductName" class="form-control form-control-lg" placeholder="Updated Product Name"/>
-                  </div>
-                  <div class="form-outline mb-4">
-                      <input type="text" id="updatedProductDescription" class="form-control form-control-lg" placeholder="Updated Product Description"/>
-                  </div>
-                  <div class="form-outline mb-4">
-                      <input type="text" id="updatedProductPrice" class="form-control form-control-lg" placeholder="Updated Product Price"/>
-                  </div>
-                  <div class="form-outline mb-4">
-                      <label for="updatedFileInput">Updated Product Image</label>
-                      <input type="file" class="form-control-file form-control" id="updatedFileInput" name="updatedFileInput">
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success" id="btnUpdateProduct">Update Product</button>
-              </div>
-          </div>
-      </div>
-  </div>
+<div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+                <div class="form-outline mb-4">
+                    <input type="text" id="updatedProductName" class="form-control form-control-lg" placeholder="Updated Product Name"/>
+                </div>
+                <div class="form-outline mb-4">
+                    <input type="text" id="updatedProductDescription" class="form-control form-control-lg" placeholder="Updated Product Description"/>
+                </div>
+                <div class="form-outline mb-4">
+                    <input type="text" id="updatedProductPrice" class="form-control form-control-lg" placeholder="Updated Product Price"/>
+                </div>
+                <div class="form-outline mb-4">
+                    <label for="updatedFileInput">Updated Product Image</label>
+                    <input type="file" class="form-control-file form-control" id="updatedFileInput" name="updatedFileInput">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="btnUpdateProduct">Update Product</button>
+            </div>
+        </div>
+    </div>
+</div>
 
   <script src="product.js"></script>
   </body>

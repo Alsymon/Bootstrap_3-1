@@ -87,20 +87,24 @@ if (btnLogin) {
     function loginUser() {
         let loginEmail = document.querySelector("#form2Example18");
         let loginPassword = document.querySelector("#form2Example28");
-
+    
         // Validate that email and password are not empty
         if (!loginEmail.value || !loginPassword.value) {
             return alert("Please enter both email and password.");
         }
-
+    
         // Authenticate the user
-        if (authenticateUser(loginEmail.value, loginPassword.value)) {
+        let existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+        let user = existingUsers.find(u => u.email === loginEmail.value && u.password === loginPassword.value);
+    
+        if (user) {
             alert("Login successful!");
-
-            // Redirect to another page or perform other actions as needed
-
-            // For testing, let's redirect to ../index.html
-            window.location.href = "../index.html";
+    
+            // Store the user information in local storage
+            localStorage.setItem("loggedInUser", JSON.stringify(user));
+    
+            // Redirect to the profile page or perform other actions as needed
+            window.location.href = "../profile/profile.html";
         } else {
             alert("Invalid credentials. Please try again.");
         }
