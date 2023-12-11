@@ -49,21 +49,12 @@ if (btnRegister) {
     
         console.log("User registered", user);
     
-        // Clear the text fields
-        firstname.value = "";
-        lastname.value = "";
-        email.value = "";
-        password.value = "";
-        maleGender.checked = false;
-        femaleGender.checked = false;
-        otherGender.checked = false;
-        address.value = "";
-        age.value = "";
+        // Automatically log in the user after successful registration
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
     
-        // Close the modal
-        let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-        modal.hide();
+
     }
+    
     
 
     btnRegister.addEventListener("click", () => {

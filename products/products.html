@@ -4,16 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<!-- Bootstrap CSS (choose only one version) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+     
 <style>
+  .productRow3:empty {
+  height: auto;
+}
+    .productRow3 {
+      min-height: 0;
+      width: 100%;
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between; /* Adjust this property based on your preference */
+    flex-wrap: wrap; /* Allow products to wrap to the next line if the container is not wide enough */
+  }
   body {
     background: #e2eaef;
     font-family: "Open Sans", sans-serif;
@@ -98,13 +111,6 @@ button{
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                  <li class="nav-item">
-                    <form class="d-flex" role="search">
-                      <input id="searchInput" class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
-
-                      <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                  </li>
                   <a class="navbar-brand" id="profile" href="../products/products.html">Products</a>
                   <a class="navbar-brand" id="profile" href="../profile/profile.html">Profile</a>
                   <li class="nav-item">
@@ -112,59 +118,13 @@ button{
                   </li>
                 </ul>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Add a Product
-                </button>
+                  Add Product
+              </button>
       
                 <div>
   <a class="login" href="../login/login.html">
                     Logout
-                </a>
-                  
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="addProductModalLabel">Add a Product</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
-          <div class="modal-body">
-              <label for="productName" class="form-label">Product Name:</label>
-              <div class="form-outline mb-4">
-                  <input type="text" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
-              </div>
-
-              <label for="productDescription" class="form-label">Product Description:</label>
-              <div class="form-outline mb-4">
-                  <input type="text" id="productDescription" class="form-control form-control-lg" placeholder="Product Description" />
-              </div>
-
-              <label for="productPrice" class="form-label">Product Price:</label>
-              <div class="form-outline mb-4">
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="text" id="productPrice" class="form-control form-control-lg">
-                    <span class="input-group-text">.00</span>
-                </div>
-            </div>
-            
-
-              <label for="fileInput" class="form-label">Product Image:</label>
-              <div class="form-outline mb-4">
-                  <div class="input-group">
-                      <input type="file" class="form-control-file form-control" id="fileInput" name="fileInput">
-                  </div>
-              </div>
-          </div>
-
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success" id="btnAddProduct">Add Product</button>
-          </div>
-      </div>
-  </div>
-</div>
-
+  </a>
               
                 </div>
         
@@ -177,11 +137,13 @@ button{
       <div class="row1"  id="productRow1">
         
         <div class="img-box" id ="productImage">
-          <img src="https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair.png" width = "100%" alt="Laptop">
+          <img src="https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair.png" width = "50%" alt="Laptop">
           <div class="card-body">
             <h4>Apple Macbook Air M1</h4>		
-            <p>The Apple Macbook Air M1 2020 meets the build quality and provides a reliable performance within its budget segment. Weighting 1.29kg and has a screen resolution of 2560 x 1600pixels, it is great for long hours of entertainment and work.</p>
-          </div>
+            <div class="card-footer d-flex justify-content-between">
+              <p>Price:<button type="button" class="btn btn-dark">₱61,551</button>
+                </p>
+                </div>   </div>
           
           <div class="card-footer d-flex justify-content-between">
             <div class="d-flex flex-column align-items-center mb-3">
@@ -200,11 +162,13 @@ button{
           </div>
           <div class="row2"  id="productRow2">
             <div class="img-box">
-              <img src="https://i1.wp.com/laptopmedia.com/wp-content/uploads/2020/01/2-3-e1578393693450.png?fit=985%2C656&ssl=1" width = "100%" alt="Laptop">
+              <img src="https://i1.wp.com/laptopmedia.com/wp-content/uploads/2020/01/2-3-e1578393693450.png?fit=985%2C656&ssl=1" width = "50%" alt="Laptop">
               <div class="card-body">
                 <h4>ASUS ROG Zephyrus G14 GA401</h4>		
-                <p>ASUS’s ROG Zephyrus G14 GA401 laptop is the ideal gaming laptop for you. In terms of display, its 14" display has a screen resolution of 2560 x 1440pixels. In terms of weight, it weighs only 1.7kg. Scroll down below to compare the price of this ASUS laptop and check out its specs!</p>
-              </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <p>Price:<button type="button" class="btn btn-dark">₱36,834</button>
+                    </p>
+                    </div>  </div>
               <div class="card-footer d-flex justify-content-between">
                 <div class="card-footer d-flex justify-content-between">
                   <div class="d-flex flex-column align-items-center mb-3">
@@ -216,7 +180,7 @@ button{
                 <!-- Add to Cart and See Info buttons -->
                 <div class="d-flex flex-column align-items-center">
                     <button type="button" class="btn btn-outline-success">Add to Cart</button>
-                    <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal1">See Info</button>
+                    <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal2">See Info</button>
                 </div>
                 </div>
                 </div>
@@ -224,11 +188,15 @@ button{
               </div>
               <div class="row3" id="productRow3">
                 <div class="img-box">
-                  <img src="https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png" width="60%" height ="100%" alt="Cellphone">
+                  <img src="https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png" width="30%" height ="100%" alt="Cellphone">
                   <div class="card-body">
                     <h4>Apple iPhone 13</h4>		
-              <p>The cheapest price of Apple iPhone 13 in Philippines is PHP 28950. The Apple iPhone 13 features a 6.1" display, 12 + 12MP back camera, 12MP front camera, and a 3240mAh battery capacity. It is powered by the Hexa Core CPU and runs on iOS.</p>
-                  </div>
+                    <div class="card-footer d-flex justify-content-between">
+                      <p>Price:<button type="button" class="btn btn-dark">₱42,990</button>
+                        </p>
+                        </div>
+                  <div>
+                     </div>
                   <div class="card-footer d-flex justify-content-between">
                     <div class="card-footer d-flex justify-content-between">
                       <div class="d-flex flex-column align-items-center mb-3">
@@ -240,15 +208,59 @@ button{
                     <!-- Add to Cart and See Info buttons -->
                     <div class="d-flex flex-column align-items-center">
                         <button type="button" class="btn btn-outline-success">Add to Cart</button>
-                        <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal1">See Info</button>
+                        <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal3">See Info</button>
                     </div>
                     </div>
                     </div>
                   </div>  
                   
     </div>
+    </div>  
+    </div>
+    <div class="row3 productRow3">
+      
+  </div>
 
-    
+  <!--Add Product Modal-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add a Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+            <div class="modal-body">
+                <label for="productName" class="form-label">Product Name:</label>
+                <div class="form-outline mb-4">
+                    <input type="text" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
+                </div>
+
+                <label for="productPrice" class="form-label">Product Price:</label>
+                <div class="form-outline mb-4">
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="text" id="productPrice" class="form-control form-control-lg">
+                        <span class="input-group-text">.00</span>
+                    </div>
+                </div>
+
+                <label for="fileInput" class="form-label">Product Image:</label>
+                <div class="form-outline mb-4">
+                    <div class="input-group">
+                        <input type="file" class="form-control-file form-control" id="fileInput" name="fileInput">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="btnAddProduct">Add Product</button>
+             </div>
+        </div>
+    </div>
+</div>
+    <!--First Modal-->
 <div class="modal fade" id="productInfoModal1" tabindex="-1" aria-labelledby="productInfoModalLabel1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -324,9 +336,6 @@ button{
                     <input type="text" id="updatedProductDescription" class="form-control form-control-lg" placeholder="Updated Product Description"/>
                 </div>
                 <div class="form-outline mb-4">
-                    <input type="text" id="updatedProductPrice" class="form-control form-control-lg" placeholder="Updated Product Price"/>
-                </div>
-                <div class="form-outline mb-4">
                     <label for="updatedFileInput">Updated Product Image</label>
                     <input type="file" class="form-control-file form-control" id="updatedFileInput" name="updatedFileInput">
                 </div>
@@ -338,6 +347,6 @@ button{
         </div>
     </div>
 </div>
-
   <script src="product.js"></script>
   </body>
+  

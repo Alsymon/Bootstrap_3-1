@@ -1,49 +1,99 @@
-let productList = [
-    { id: 'product1', name: 'Product 1', description: 'Description 1', price: '100', image: 'product1.jpg' },
-    { id: 'product2', name: 'Product 2', description: 'Description 2', price: '200', image: 'product2.jpg' },
-    { id: 'product3', name: 'Product 3', description: 'Description 3', price: '300', image: 'product3.jpg' }
-];
+const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
 
-btnAddProduct = document.getElementById('btnAddProduct');
+// Display existing products on page load
+displayProducts();
 
-if (btnAddProduct) {
-    btnAddProduct.addEventListener("click", function () {
-        let productName = document.querySelector("#productName");
-        let productDescription = document.querySelector("#productDescription");
-        let productPrice = document.querySelector("#productPrice");
-        let productImage = document.querySelector("#fileInput"); // Use file input with id "fileInput"
+document.getElementById('btnAddProduct').addEventListener('click', addProduct);
 
-        let productImageValue = productImage.files.length > 0 ? productImage.files[0].name : "";
+function addProduct() {
+  const productName = document.getElementById('productName').value;
+  const productPrice = document.getElementById('productPrice').value;
+  const fileInput = document.getElementById('fileInput');
+  const productImage = fileInput.files[0];
 
-        let product = {
-            id: 'product' + (productList.length + 1), // Assuming a simple way to generate IDs
-            name: productName.value,
-            description: productDescription.value,
-            price: productPrice.value,
-            image: productImageValue,
-        };
+  if (!productName || !productPrice || !productImage) {
+    alert('Please fill in all fields.');
+    return;
+  }
 
-        if (!product.name || !product.description || !product.price || !product.image) {
-            return alert("All fields are required");
-        }
+  // Assuming productPrice is a number, you may want to validate it further
 
-        console.log("Product added", product);
+  // Add the new product to the array
+  storedProducts.push({
+    name: productName,
+    price: parseFloat(productPrice),
+    imageUrl: URL.createObjectURL(productImage) // Create a URL for the selected image
+  });
 
-        let modalElement = new bootstrap.Modal(document.getElementById("exampleModal"));
-        modalElement.hide();
+  // Save the updated products array to local storage
+  localStorage.setItem('products', JSON.stringify(storedProducts));
 
-        productName.value = "";
-        productDescription.value = "";
-        productPrice.value = "";
-        productImage.value = "";
-        productList.push(product);
+  // Clear form fields
+  document.getElementById('productName').value = '';
+  document.getElementById('productPrice').value = '';
+     fileInput.value = '';
 
-        localStorage.setItem("productList", JSON.stringify(productList));
-    });
+  // Display the updated list of products
+  displayProducts();
 }
+
+function displayProducts() {
+    const productRow3Container = document.querySelector('.productRow3');
+    
+    // Check if there are no products
+    if (storedProducts.length === 0) {
+        productRow3Container.style.display = 'none';
+    } else {
+        productRow3Container.style.display = 'flex';
+        productRow3Container.innerHTML = ''; // Clear existing content
+
+        // Loop through the products and create a new row3 for each product
+        storedProducts.forEach((product, index) => {
+            const productElement = document.createElement('div');
+            productElement.className = 'row3';
+            productElement.innerHTML = `
+            <div class="img-box">
+            <img src="${product.imageUrl}" width="30%" height="100%" alt="${product.name}">
+            <div class="card-body">
+                        <h4>${product.name}</h4>		
+                        <div class="card-footer d-flex justify-content-between">
+                            <p>Price:<button type="button" class="btn btn-dark">₱${product.price.toFixed(2)}</button></p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div class="d-flex flex-column align-items-center mb-3">
+                                <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete Product</button>
+                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
+                            </div>
+                            <div class="d-flex flex-column align-items-center">
+                                <button type="button" class="btn btn-outline-success">Add to Cart</button>
+                                <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Append the new row3 to the productRow3 container
+            productRow3Container.appendChild(productElement);
+        });
+    
+    }
+}
+  // Call the function to display products
+  displayProducts();
 
 // The rest of your code for deleting and updating products remains unchanged
 
+function deleteProduct(index) {
+    // Remove the product at the specified index
+    storedProducts.splice(index, 1);
+  
+    // Save the updated products array to local storage
+    localStorage.setItem('products', JSON.stringify(storedProducts));
+  
+    // Display the updated products
+    displayProducts();
+  }
 let deleteButtons = document.querySelectorAll(".btn-danger");
 
     deleteButtons.forEach(function (button) {
@@ -57,27 +107,3 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
             }
         });
     });
-
-function updateProduct(productId) {
-    // Assuming you have input fields in your modal with IDs like "updatedProductName", "updatedProductDescription", etc.
-    let updatedName = document.getElementById('updatedProductName').value;
-    let updatedDescription = document.getElementById('updatedProductDescription').value;
-    let updatedPrice = document.getElementById('updatedProductPrice').value;
-
-    // Update the content of the product card directly
-    let productCard = document.getElementById(productId);
-    if (productCard) {
-        productCard.querySelector('.card-body h4').innerText = updatedName;
-        productCard.querySelector('.card-body p').innerText = updatedDescription;
-
-        // If you have a price element in your card, update it
-        let priceElement = productCard.querySelector('.price');
-        if (priceElement) {
-            priceElement.innerText = updatedPrice;
-        }
-    }
-
-    // Close the update modal
-    const updateProductModal = new bootstrap.Modal(document.getElementById('updateProductModal'));
-    updateProductModal.hide();
-}
