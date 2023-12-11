@@ -3,7 +3,6 @@ const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
 // Display existing products on page load
 displayProducts();
 
-document.getElementById('btnAddProduct').addEventListener('click', addProduct);
 
 function addProduct() {
   const productName = document.getElementById('productName').value;
@@ -119,7 +118,7 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
 
         } else {
             // Redirect to the login page if no user is logged in
-            window.location.href = "../login/login.html";
+            window.location.href = "login/login.html";
         }
     });
 

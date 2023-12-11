@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <!-- Add Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Your existing styles... */
+  </style>
+</head>
+<body>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Product Name: Example Product 1</h3>
+            <p class="card-text">Price: $19.99</p>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(1)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Product Name: Example Product 2</h3>
+            <p class="card-text">Price: $29.99</p>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(2)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Product Name: Example Product 3</h3>
+            <p class="card-text">Price: $39.99</p>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(3)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Adjust Quantity</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="productName"></p>
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" class="form-control" min="1" value="1" oninput="updateTotal()">
+          <p>Total Price: $<span id="totalPrice"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="addToCart()">Add to Cart</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <div id="cart">
+          <h2>Shopping Cart</h2>
+          <div id="cart-items" class="card-deck">
+            <!-- Cart items will be displayed here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Bootstrap JS and Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script>
+    const cartData = JSON.parse(localStorage.getItem('cart')) || {};
+
+    const products = [
+      { id: 1, name: 'Example Product 1', price: 19.99 },
+      { id: 2, name: 'Example Product 2', price: 29.99 },
+      { id: 3, name: 'Example Product 3', price: 39.99 }
+    ];
+
+    let selectedProduct;
+
+    function openModal(index) {
+      selectedProduct = products.find(product => product.id === index);
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('productName').textContent = `Product: ${selectedProduct.name}`;
+      updateTotal();
+    }
+
+    function closeModal() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function updateTotal() {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const totalPrice = (quantity * selectedProduct.price).toFixed(2);
+      document.getElementById('totalPrice').textContent = totalPrice;
+    }
+
+    function addToCart() {
+  const quantity = parseInt(document.getElementById('quantity').value);
+
+  // Update or add the selected product to the cart data
+  if (cartData[selectedProduct.id]) {
+    cartData[selectedProduct.id].quantity += quantity;
+  } else {
+    cartData[selectedProduct.id] = {
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      quantity: quantity
+    };
+  }
+
+  // Save the updated cart data to local storage
+  localStorage.setItem('cart', JSON.stringify(cartData));
+
+  // Update the cart display
+  updateCartDisplay();
+
+  closeModal();
+}
+    function updateCartDisplay() {
+  const cartItemsContainer = document.getElementById('cart-items');
+  cartItemsContainer.innerHTML = '';
+
+  for (const productId in cartData) {
+    const product = cartData[productId];
+    const total = (product.quantity * product.price).toFixed(2);
+
+    // Create a Bootstrap card for each product in the cart
+    const card = document.createElement('div');
+    card.className = 'card mb-3';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+
+    const cardTitle = document.createElement('h5');
+    cardTitle.className = 'card-title';
+    cardTitle.textContent = product.name;
+
+    const cardText = document.createElement('p');
+    cardText.className = 'card-text';
+    cardText.textContent = `Quantity: ${product.quantity} - Total: $${total}`;
+
+    cardBody.appendChild(cardTitle);
+    cardBody.appendChild(cardText);
+    card.appendChild(cardBody);
+
+    // Ensure proper Bootstrap card styling
+    card.style.width = '100%';
+
+    cartItemsContainer.appendChild(card);
+  }
+}
+
+
+
+    // Initial cart display
+    updateCartDisplay();
+  </script>
+
+</body>
+</html>

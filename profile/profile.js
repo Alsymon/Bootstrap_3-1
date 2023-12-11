@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Retrieve the logged-in user from local storage
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    console.log(loggedInUser); // Log the user object
 
     // Check if a user is logged in
     if (loggedInUser) {
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "../login/login.html";
     }
 });
+
 function editUserInformation() {
     // Get the values from the input fields
     var fullName = document.getElementById('edit-fullName').value;
@@ -49,4 +51,18 @@ function editUserInformation() {
         // Handle the case where no user is logged in
         console.error("No user is logged in.");
     }
+}
+function logoutUser() {
+    // Remove the logged-in user information from local storage
+    localStorage.removeItem('loggedInUser');
+    
+    // Redirect to the login page
+    window.location.href = '../login/login.html';
+}
+
+// Example of using the logoutUser function with a logout link
+let logoutLink = document.querySelector('.login');
+
+if (logoutLink) {
+    logoutLink.addEventListener('click', logoutUser);
 }

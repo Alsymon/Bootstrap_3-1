@@ -12,10 +12,10 @@ if (btnRegister) {
         let otherGender = document.querySelector("#otherGender");
         let address = document.querySelector("#homeaddress");
         let age = document.querySelector("#age");
-    
+
         // Load existing users from local storage
         let existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    
+
         let user = {
             firstname: firstname.value,
             lastname: lastname.value,
@@ -25,43 +25,72 @@ if (btnRegister) {
             address: address.value,
             age: age.value
         };
-    
+
         if (!user.email || !user.firstname || !user.lastname || !user.password) {
             return alert("Please fill in all required fields.");
         }
-    
+
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(user.email)) {
             return alert("Please enter a valid email address.");
         }
-    
+
         // Check if the email is already registered
         if (existingUsers.some(u => u.email === user.email)) {
             return alert("Email already registered. Please choose a different email.");
         }
-    
+
         // Add the new user to the existing users array
         existingUsers.push(user);
-    
+
         // Save the updated users array back to local storage
         localStorage.setItem("users", JSON.stringify(existingUsers));
-    
+
         console.log("User registered", user);
-    
+
         // Automatically log in the user after successful registration
         localStorage.setItem("loggedInUser", JSON.stringify(user));
-    
 
+        firstname.value = "";
+        lastname.value = "";
+        email.value = "";
+        password.value = "";
+        maleGender.checked = false;
+        femaleGender.checked = false;
+        otherGender.checked = false;
+        address.value = "";
+        age.value = "";
+    
+        // Close the registration modal if it exists
+        let registrationModal = document.getElementById('yourRegistrationModalId');
+        if (registrationModal) {
+            let modalInstance = bootstrap.Modal.getInstance(registrationModal);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
     }
-    
-    
 
     btnRegister.addEventListener("click", () => {
         registerUser();
     });
 }
 let btnLogin = document.querySelector("#btnLogin");
+
+if (btnLogin) {
+    function authenticateUser(email, password) {
+        // Load existing users from local storage
+        let existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+        // Find the user with the provided email
+        let user = existingUsers.find(u => u.email === email);
+
+        // Check if the user was found and if the password matches
+        return user && user.password === password;
+    }
+
+   let btnLogin = document.querySelector("#btnLogin");
 
 if (btnLogin) {
     function authenticateUser(email, password) {
@@ -91,6 +120,10 @@ if (btnLogin) {
         if (user) {
             alert("Login successful!");
     
+            // Clear the login form
+            loginEmail.value = "";
+            loginPassword.value = "";
+    
             // Store the user information in local storage
             localStorage.setItem("loggedInUser", JSON.stringify(user));
     
@@ -106,4 +139,5 @@ if (btnLogin) {
         event.preventDefault(); // Prevent the default form submission
         loginUser();
     });
+}
 }
