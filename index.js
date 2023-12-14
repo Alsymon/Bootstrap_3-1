@@ -1,4 +1,5 @@
 const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+let cartData = JSON.parse(localStorage.getItem('cart')) || {}; // Declare cartData
 
 // Display existing products on page load
 displayProducts();
@@ -34,6 +35,8 @@ function addProduct() {
 
   // Display the updated list of products
   displayProducts();
+  $('#yourModalId').modal('hide');
+  alert('Product added successfully!');
 }
 
 function displayProducts() {
@@ -57,16 +60,20 @@ function displayProducts() {
                         <h4>${product.name}</h4>		
                         <div class="card-footer d-flex justify-content-between">
                         <p>Price: <button type="button" class="btn btn-dark">₱${typeof product.price === 'number' ? product.price.toFixed(2) : 'N/A'}</button></p>
+                        <div class="d-flex flex-column align-items-center">
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#quantityModal" onclick="setSelectedProduct(${index})">Buy</button>
+                        </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <div class="d-flex flex-column align-items-center mb-3">
                                 <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete Product</button>
-                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>                                   
-                            </div>
+                               <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
+                                 
+                                </div>
                             <div class="d-flex flex-column align-items-center">
-                                <button type="button" class="btn btn-outline-success">Add to Cart</button>
+                            <button type="button" class="btn btn-outline-success" onclick="openModal(${index})">Add to Cart</button>
                                 <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -92,6 +99,7 @@ function deleteProduct(index) {
   
     // Display the updated products
     displayProducts();
+    alert('Deleted successfully!');
   }
 let deleteButtons = document.querySelectorAll(".btn-danger");
 
@@ -173,7 +181,150 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     
             // Close the update product modal
             $('#updateProductModal').modal('hide');
+            alert('Updated successfully!');
         } else {
             alert('Invalid product index.');
         }
     }
+    
+function setSelectedProduct(index) {
+    selectedProduct = storedProducts[index];
+
+    document.getElementById('modalProductName').textContent = selectedProduct.name;
+    document.getElementById('modalProductPrice').textContent = selectedProduct.price.toFixed(2);
+
+    document.getElementById('modalTotalPrice').textContent = '0.00';
+
+    // Add an event listener to the quantity input
+    const quantityInput = document.getElementById('quantityInput');
+    quantityInput.value = 1;  // Set a default value
+    quantityInput.addEventListener('input', updateTotalPrice);
+}
+
+function updateTotalPrice() {
+    const quantityInput = document.getElementById('quantityInput');
+    const quantity = parseInt(quantityInput.value);
+
+    if (isNaN(quantity) || quantity < 1) {
+        // Handle invalid input (optional)
+        document.getElementById('modalTotalPrice').textContent = '0.00';
+        return;
+    }
+
+    // Update the total price based on the quantity
+    const totalPrice = (quantity * selectedProduct.price).toFixed(2);
+    document.getElementById('modalTotalPrice').textContent = totalPrice;
+}
+function buyProductWithQuantity() {
+    const quantityInput = document.getElementById('quantityInput');
+    const quantity = parseInt(quantityInput.value);
+
+    if (isNaN(quantity) || quantity < 1) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    // Store the purchased product information in cartData
+    const purchasedItem = {
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        quantity: quantity,
+    };
+
+    // Use a unique key for each purchase, you can customize this based on your needs
+    const purchaseKey = `purchase_${new Date().getTime()}`;
+
+    // Save the purchased item to cartData
+    cartData[purchaseKey] = purchasedItem;
+
+    // Optionally, you can display a confirmation message to the user
+    alert(`Item "${selectedProduct.name}" (Quantity: ${quantity}) added to cart successfully!`);
+
+    // Reset the quantity input field
+    quantityInput.value = '';
+
+    // Close the modal
+    $('#quantityModal').modal('hide');
+}
+
+function resetModalContent() {
+    document.getElementById('modalProductName').textContent = '';
+    document.getElementById('modalProductPrice').textContent = '';
+    document.getElementById('quantityInput').value = '';
+}
+
+function openModal(index) {
+    console.log("Opening modal for index:", index);
+    selectedProduct = storedProducts[index];
+    $('#myModal').modal('show');
+    document.getElementById('productName').textContent = `Product: ${selectedProduct.name}`;
+    updateTotal();
+}
+
+function closeModal() {
+    $('#myModal').modal('hide');
+}
+
+function updateTotal() {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const totalPrice = (quantity * selectedProduct.price).toFixed(2);
+    document.getElementById('totalPrice').textContent = totalPrice;
+}
+
+function addToCartFromModal() {
+    console.log("Adding to cart from modal:", selectedProduct);
+
+    if (!selectedProduct) {
+        console.error("Invalid selectedProduct");
+        return;
+    }
+    const quantityInput = document.getElementById('quantity');
+    const quantity = parseInt(document.getElementById('quantity').value);
+
+    if (isNaN(quantity) || quantity < 1) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    const cartItemId = `${selectedProduct.name}_${new Date().getTime()}`;
+
+    if (cartData[cartItemId]) {
+        cartData[cartItemId].quantity += quantity;
+    } else {
+        cartData[cartItemId] = {
+            id: cartItemId, // Use the generated cartItemId as the id
+            name: selectedProduct.name,
+            price: selectedProduct.price,
+            quantity: quantity,
+            imageUrl: selectedProduct.imageUrl
+        };
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cartData));
+    updateCartDisplay();
+    closeModal();
+    alert('Item added to the cart successfully!');
+
+    // Reset the quantity input field to 1
+    quantityInput.value = 1;
+}
+
+function updateCartDisplay() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    
+
+    let totalCartPrice = 0;
+
+    for (const cartItemId in cartData) {
+        const cartItem = cartData[cartItemId];
+        const total = (cartItem.quantity * cartItem.price).toFixed(2);
+
+        totalCartPrice += parseFloat(total);
+
+        const productElement = document.createElement('div');
+        productElement.className = 'row3 card mb-3';
+
+       
+        
+    }
+}

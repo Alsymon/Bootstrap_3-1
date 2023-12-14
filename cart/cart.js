@@ -110,6 +110,9 @@ function updateCartDisplay() {
                             <button class="btn btn-danger mb-2" onclick="deleteFromCart('${cartItemId}')">Remove</button>
                         </div>
                         <div class="d-flex flex-column align-items-center">
+                        <button class="btn btn-success" onclick="makePurchase()">Buy</button>
+                    </div>
+                        <div class="d-flex flex-column align-items-center">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-outline-danger" onclick="decreaseQuantity('${cartItemId}')">-</button>
                                 <span class="mx-2">${cartItem.quantity}</span>
@@ -121,13 +124,37 @@ function updateCartDisplay() {
                 </div>
             </div>
         `;
-
+        
         cartItemsContainer.appendChild(productElement);
     }
 
     // Update the total cart price
     document.getElementById('totalCartPrice').textContent = `Total Cart Price: ₱${totalCartPrice.toFixed(2)}`;
 }
+function makePurchase() {
+    // Check if the cart is not empty
+    if (Object.keys(cartData).length > 0) {
+        // Generate a unique purchase ID
+        const purchaseId = `purchase_${new Date().getTime()}`;
+
+        // Save the cart data as a purchase in local storage
+        localStorage.setItem(purchaseId, JSON.stringify(cartData));
+
+        // Optionally, you can also save the purchase ID in an array for easier retrieval
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        salesData.push(purchaseId);
+        localStorage.setItem('salesData', JSON.stringify(salesData));
+
+        // Clear the cart data after making a purchase
+        cartData = {}; // Reset the cart data
+        localStorage.removeItem('cart');
+
+        // Update the cart display
+        updateCartDisplay();
+    } 
+}
+
+// Example usage
 
 // Initial cart display
 updateCartDisplay();
@@ -196,17 +223,20 @@ function displayProducts() {
             <div class="card-body">
                         <h4>${product.name}</h4>		
                         <div class="card-footer d-flex justify-content-between">
-                            <p>Price:<button type="button" class="btn btn-dark">₱${product.price.toFixed(2)}</button></p>
+                        <p>Price: <button type="button" class="btn btn-dark">₱${typeof product.price === 'number' ? product.price.toFixed(2) : 'N/A'}</button></p>
+                        <div class="d-flex flex-column align-items-center">
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#quantityModal" onclick="setSelectedProduct(${index})">Buy</button>     </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <div class="d-flex flex-column align-items-center mb-3">
                                 <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete Product</button>
-                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
-                            </div>
+                               <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
+                                 
+                                </div>
                             <div class="d-flex flex-column align-items-center">
                             <button type="button" class="btn btn-outline-success" onclick="openModal(${index})">Add to Cart</button>
                                 <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -232,6 +262,7 @@ function deleteProduct(index) {
   
     // Display the updated products
     displayProducts();
+    alert('Deleted successfully!');
 }
 
 let deleteButtons = document.querySelectorAll(".btn-danger");
@@ -313,7 +344,75 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     
             // Close the update product modal
             $('#updateProductModal').modal('hide');
+            alert('Updated successfully!');
         } else {
             alert('Invalid product index.');
         }
     }
+
+    
+function setSelectedProduct(index) {
+    selectedProduct = storedProducts[index];
+
+    document.getElementById('modalProductName').textContent = selectedProduct.name;
+    document.getElementById('modalProductPrice').textContent = selectedProduct.price.toFixed(2);
+
+    document.getElementById('modalTotalPrice').textContent = '0.00';
+
+    // Add an event listener to the quantity input
+    const quantityInput = document.getElementById('quantityInput');
+    quantityInput.value = 1;  // Set a default value
+    quantityInput.addEventListener('input', updateTotalPrice);
+}
+
+function updateTotalPrice() {
+    const quantityInput = document.getElementById('quantityInput');
+    const quantity = parseInt(quantityInput.value);
+
+    if (isNaN(quantity) || quantity < 1) {
+        // Handle invalid input (optional)
+        document.getElementById('modalTotalPrice').textContent = '0.00';
+        return;
+    }
+
+    // Update the total price based on the quantity
+    const totalPrice = (quantity * selectedProduct.price).toFixed(2);
+    document.getElementById('modalTotalPrice').textContent = totalPrice;
+}
+function buyProductWithQuantity() {
+    const quantityInput = document.getElementById('quantityInput');
+    const quantity = parseInt(quantityInput.value);
+
+    if (isNaN(quantity) || quantity < 1) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    // Store the purchased product information in cartData
+    const purchasedItem = {
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        quantity: quantity,
+    };
+
+    // Use a unique key for each purchase, you can customize this based on your needs
+    const purchaseKey = `purchase_${new Date().getTime()}`;
+
+    // Save the purchased item to cartData
+    cartData[purchaseKey] = purchasedItem;
+
+    // Optionally, you can display a confirmation message to the user
+    alert(`Item "${selectedProduct.name}" (Quantity: ${quantity}) added to cart successfully!`);
+
+    // Reset the quantity input field
+    quantityInput.value = '';
+
+    // Close the modal
+    $('#quantityModal').modal('hide');
+}
+
+function resetModalContent() {
+    document.getElementById('modalProductName').textContent = '';
+    document.getElementById('modalProductPrice').textContent = '';
+    document.getElementById('quantityInput').value = '';
+}

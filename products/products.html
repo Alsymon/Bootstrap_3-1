@@ -186,7 +186,7 @@ button{
                 <p>Price: ₱61,551</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Buy Now</button>
+               
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -206,7 +206,7 @@ button{
                 <p>Price: ₱36,834</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Buy Now</button>
+              
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -226,7 +226,7 @@ button{
             <p>Price: ₱42,990</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-success">Buy Now</button>
+           
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
@@ -280,6 +280,28 @@ button{
          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Cancel</button>
       </div>
     </div>
+  </div>
+</div>
+<!--Buy Modal-->
+<div class="modal fade" id="quantityModal" tabindex="-1" aria-labelledby="quantityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="quantityModalLabel">Enter Quantity</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p>Product: <span id="modalProductName"></span></p>
+              <p>Price per unit: ₱<span id="modalProductPrice"></span></p>
+              <label for="quantityInput">Quantity:</label>
+              <input type="number" id="quantityInput" class="form-control" placeholder="Enter quantity" min="1">
+              <p>Total Price: ₱<span id="modalTotalPrice">0.00</span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="buyProductWithQuantity()">Buy</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalContent()">Close</button>
+          </div>
+      </div>
   </div>
 </div>
 <div class="mb-4">
