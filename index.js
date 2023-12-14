@@ -125,7 +125,7 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     function logoutUser() {
         // Remove the logged-in user information from local storage
         localStorage.removeItem('loggedInUser');
-        
+        alert('Logout Successful.');
         // Redirect to the login page
         window.location.href = '../login/login.html';
     }

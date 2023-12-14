@@ -3,48 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  
   <title>Shopping Cart</title>
   <!-- Add Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* Your existing styles... */
+ 
+
+   
+   <style>
+  body {
+    background: #e2eaef;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .container {
+    margin: 10px;
+    display: flex;
+  }
+
+  .row1,
+  .row2,
+  .row3 {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin: 30px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .btn.btn-outline-primary {
+    cursor: pointer;
+    font-size: 16px;
+    color: #abb0b8;
+    border: 1px solid transparent;
+  }
+
+  .card-footer.d-flex.justify-content-between {
+    width: 340px;
+  }
+
+  .addtocart {
+    display: block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #00a854;
+    border: 1px solid #00a854;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    width: 130px;
+    height: 40px;
+    text-align: center;
+    position: absolute;
+  }
+
+  .addtocart:hover {
+    background-color: #00a854;
+    color: #fff;
+  }
+
+  #profile {
+    margin-left: 20px;
+  }
+button{
+    margin-left: 5px;
+}
+.login{
+    padding-left: 5px;
+}
+.d-flex.flex-column.align-items-center.mb-3{
+  padding-left: 25px;
+}
+.d-flex.flex-column.align-items-center{
+  padding-right: 25px;
+}
+
+.productRow3 {
+
+      width: 90%;
+
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between; /* Adjust this property based on your preference */
+    flex-wrap: wrap; /* Allow products to wrap to the next line if the container is not wide enough */
+  }
+  .mb-4 {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.form-control {
+  background-color: rgba(0, 0, 0, 0);
+}
+.mb-4 {
+  background-color: transparent;
+}
+
+.form-control {
+  background-color: transparent;
+}
   </style>
 </head>
 <body>
+  <div class="overlay"></div>
+  <div class="">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="../index.html">Electronics Shop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Product Name: Example Product 1</h3>
-            <p class="card-text">Price: $19.99</p>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(1)">Add to Cart</button>
+
+              <a class="navbar-brand" id="profile" href="../products/products.html">Products</a>
+              <a class="navbar-brand" id="profile" href="../profile/profile.html">Profile</a>
+              <a class="navbar-brand" id="profile" href="../cart/cart.html">Cart</a>
+              <a class="navbar-brand" id="profile" href="../sold/sold.html">Sold</a>
+              <li class="nav-item">
+                <a hidden class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            
+            </ul>
+
+  
+            <div>
+              <a class="login" href="login/login.html" onclick="logoutUser()">
+                Logout
+            </a>
+            </div>
+    
           </div>
         </div>
+      </nav>
+      
+</div>
+
+<div class="row3 productRow3">
+      
+</div>
+<div class="modal fade" id="productInfoModal1" tabindex="-1" aria-labelledby="productInfoModalLabel1" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="productInfoModalLabel1">Product Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p>Description: The Apple Macbook Air M1 2020 meets the build quality and provides reliable performance within its budget segment. Weighing 1.29kg and with a screen resolution of 2560 x 1600 pixels, it is great for long hours of entertainment and work.</p>
+            <p>Price: ₱61,551</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success">Buy Now</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Second Modal -->
+<div class="modal fade" id="productInfoModal2" tabindex="-1" aria-labelledby="productInfoModalLabel2" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="productInfoModalLabel2">Product Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p>Description: ASUS’s ROG Zephyrus G14 GA401 laptop is the ideal gaming laptop for you. In terms of display, its 14" display has a screen resolution of 2560 x 1440 pixels. In terms of weight, it weighs only 1.7kg. Scroll down below to compare the price of this ASUS laptop and check out its specs!</p>
+            <p>Price: ₱36,834</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success">Buy Now</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="productInfoModal3" tabindex="-1" aria-labelledby="productInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productInfoModalLabe">Product Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Product Name: Example Product 2</h3>
-            <p class="card-text">Price: $29.99</p>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(2)">Add to Cart</button>
-          </div>
-        </div>
+      <div class="modal-body">
+        <p>Description: The Apple iPhone 13 features a 6.1" display, 12 + 12MP back camera, 12MP front camera, and a 3240mAh battery capacity. It is powered by the Hexa Core CPU and runs on iOS.</p>
+        <p>Price: ₱42,990</p>
       </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Product Name: Example Product 3</h3>
-            <p class="card-text">Price: $39.99</p>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="openModal(3)">Add to Cart</button>
-          </div>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Buy Now</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
+
+
 
   <!-- Bootstrap Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,11 +228,11 @@
           <p id="productName"></p>
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" class="form-control" min="1" value="1" oninput="updateTotal()">
-          <p>Total Price: $<span id="totalPrice"></span></p>
+          <p>Total Price: ₱<span id="totalPrice"></span></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" onclick="addToCart()">Add to Cart</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-outline-success" onclick="addToCartFromModal()">Add to Cart</button>
+           <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Cancel</button>
         </div>
       </div>
     </div>
@@ -75,6 +243,7 @@
       <div class="col-md-8">
         <div id="cart">
           <h2>Shopping Cart</h2>
+          <div id="totalCartPrice" aria-disabled="true"></div>
           <div id="cart-items" class="card-deck">
             <!-- Cart items will be displayed here -->
           </div>
@@ -82,102 +251,12 @@
       </div>
     </div>
   </div>
-
+  <div class="mb-4">
+    <p type="text" id="fullName">
+</div>
   <!-- Add Bootstrap JS and Popper.js -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <script>
-    const cartData = JSON.parse(localStorage.getItem('cart')) || {};
-
-    const products = [
-      { id: 1, name: 'Example Product 1', price: 19.99 },
-      { id: 2, name: 'Example Product 2', price: 29.99 },
-      { id: 3, name: 'Example Product 3', price: 39.99 }
-    ];
-
-    let selectedProduct;
-
-    function openModal(index) {
-      selectedProduct = products.find(product => product.id === index);
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('modal').style.display = 'block';
-      document.getElementById('productName').textContent = `Product: ${selectedProduct.name}`;
-      updateTotal();
-    }
-
-    function closeModal() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('modal').style.display = 'none';
-    }
-
-    function updateTotal() {
-      const quantity = parseInt(document.getElementById('quantity').value);
-      const totalPrice = (quantity * selectedProduct.price).toFixed(2);
-      document.getElementById('totalPrice').textContent = totalPrice;
-    }
-
-    function addToCart() {
-  const quantity = parseInt(document.getElementById('quantity').value);
-
-  // Update or add the selected product to the cart data
-  if (cartData[selectedProduct.id]) {
-    cartData[selectedProduct.id].quantity += quantity;
-  } else {
-    cartData[selectedProduct.id] = {
-      name: selectedProduct.name,
-      price: selectedProduct.price,
-      quantity: quantity
-    };
-  }
-
-  // Save the updated cart data to local storage
-  localStorage.setItem('cart', JSON.stringify(cartData));
-
-  // Update the cart display
-  updateCartDisplay();
-
-  closeModal();
-}
-    function updateCartDisplay() {
-  const cartItemsContainer = document.getElementById('cart-items');
-  cartItemsContainer.innerHTML = '';
-
-  for (const productId in cartData) {
-    const product = cartData[productId];
-    const total = (product.quantity * product.price).toFixed(2);
-
-    // Create a Bootstrap card for each product in the cart
-    const card = document.createElement('div');
-    card.className = 'card mb-3';
-
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body';
-
-    const cardTitle = document.createElement('h5');
-    cardTitle.className = 'card-title';
-    cardTitle.textContent = product.name;
-
-    const cardText = document.createElement('p');
-    cardText.className = 'card-text';
-    cardText.textContent = `Quantity: ${product.quantity} - Total: $${total}`;
-
-    cardBody.appendChild(cardTitle);
-    cardBody.appendChild(cardText);
-    card.appendChild(cardBody);
-
-    // Ensure proper Bootstrap card styling
-    card.style.width = '100%';
-
-    cartItemsContainer.appendChild(card);
-  }
-}
-
-
-
-    // Initial cart display
-    updateCartDisplay();
+  <script src="cart.js">
   </script>
 
 </body>

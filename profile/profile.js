@@ -55,9 +55,10 @@ function editUserInformation() {
 function logoutUser() {
     // Remove the logged-in user information from local storage
     localStorage.removeItem('loggedInUser');
-    
+    alert('Logout Successful.');
     // Redirect to the login page
     window.location.href = '../login/login.html';
+
 }
 
 // Example of using the logoutUser function with a logout link
