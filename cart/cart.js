@@ -277,3 +277,43 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     if (logoutLink) {
         logoutLink.addEventListener('click', logoutUser);
     }
+    function populateUpdateModal(index) {
+        const product = storedProducts[index];
+    
+        // Populate the modal fields based on the product details
+        document.getElementById('updatedProductIndex').value = index;
+        document.getElementById('updatedProductName').value = product.name;
+        document.getElementById('updatedProductPrice').value = product.price;
+        document.getElementById('updatedFileInput').value = ''; // Clear file input
+    }
+    
+    function updateProduct() {
+        const updatedProductIndex = document.getElementById('updatedProductIndex').value;
+        const updatedProductName = document.getElementById('updatedProductName').value;
+        const updatedProductPrice = document.getElementById('updatedProductPrice').value;
+        const updatedProductImage = document.getElementById('updatedFileInput').files[0];
+    
+        if (updatedProductIndex !== '' && !isNaN(updatedProductIndex)) {
+            const index = parseInt(updatedProductIndex);
+    
+            // Update the product details
+            storedProducts[index].name = updatedProductName;
+            storedProducts[index].price = parseFloat(updatedProductPrice);
+    
+            // Update the image only if a new image is selected
+            if (updatedProductImage) {
+                storedProducts[index].imageUrl = URL.createObjectURL(updatedProductImage);
+            }
+    
+            // Save the updated products array to local storage
+            localStorage.setItem('products', JSON.stringify(storedProducts));
+    
+            // Display the updated list of products
+            displayProducts();
+    
+            // Close the update product modal
+            $('#updateProductModal').modal('hide');
+        } else {
+            alert('Invalid product index.');
+        }
+    }

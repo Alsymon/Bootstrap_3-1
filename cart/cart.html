@@ -118,35 +118,27 @@ button{
   <div class="overlay"></div>
   <div class="">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
+      <div class="container-fluid">
           <a class="navbar-brand" href="../index.html">Electronics Shop</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-
-              <a class="navbar-brand" id="profile" href="../products/products.html">Products</a>
-              <a class="navbar-brand" id="profile" href="../profile/profile.html">Profile</a>
-              <a class="navbar-brand" id="profile" href="../cart/cart.html">Cart</a>
-              <a class="navbar-brand" id="profile" href="../sold/sold.html">Sold</a>
-              <li class="nav-item">
-                <a hidden class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
-            
-            </ul>
-
-  
-            <div>
-              <a class="login" href="login/login.html" onclick="logoutUser()">
-                Logout
-            </a>
-            </div>
-    
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="nav-link" href="../products/products.html">Products</a></li>
+                  <li class="nav-item"><a class="nav-link" href="../profile/profile.html">Profile</a></li>
+                  <li class="nav-item"><a class="nav-link" href="../cart/cart.html">Cart</a></li>
+                  <li class="nav-item"><a class="nav-link" href="../sales/sales.html">Sales</a></li>
+                  <li class="nav-item"><a class="nav-link" href="../accounts/accounts.html">Account</a></li>
+              </ul>
+              <div>
+                  <a class="login" href="../login/login.html" onclick="logoutUser()">Logout</a>
+              </div>
           </div>
-        </div>
-      </nav>
+      </div>
+  </nav>
       
 </div>
 
@@ -251,6 +243,33 @@ button{
       </div>
     </div>
   </div>
+  <!--Update Modal-->
+  <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="updatedProductIndex">
+                <label for="updatedProductName">Product Name:</label>
+                <input type="text" id="updatedProductName" class="form-control mb-3">
+                
+                <label for="updatedProductPrice">Product Price:</label>
+                <input type="text" id="updatedProductPrice" class="form-control mb-3">
+                
+                <label for="updatedFileInput">Updated Product Image:</label>
+                <input type="file" class="form-control-file form-control mb-3" id="updatedFileInput" name="updatedFileInput">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="updateProduct()">Update Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
   <div class="mb-4">
     <p type="text" id="fullName">
 </div>

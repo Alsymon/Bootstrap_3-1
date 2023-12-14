@@ -56,12 +56,12 @@ function displayProducts() {
             <div class="card-body">
                         <h4>${product.name}</h4>		
                         <div class="card-footer d-flex justify-content-between">
-                            <p>Price:<button type="button" class="btn btn-dark">₱${product.price.toFixed(2)}</button></p>
+                        <p>Price: <button type="button" class="btn btn-dark">₱${typeof product.price === 'number' ? product.price.toFixed(2) : 'N/A'}</button></p>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <div class="d-flex flex-column align-items-center mb-3">
                                 <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete Product</button>
-                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
+                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>                                   
                             </div>
                             <div class="d-flex flex-column align-items-center">
                                 <button type="button" class="btn btn-outline-success">Add to Cart</button>
@@ -127,7 +127,7 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
         localStorage.removeItem('loggedInUser');
         alert('Logout Successful.');
         // Redirect to the login page
-        window.location.href = '../login/login.html';
+        window.location.href = 'login/login.html';
     }
     
     // Example of using the logoutUser function with a logout link
@@ -135,4 +135,45 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     
     if (logoutLink) {
         logoutLink.addEventListener('click', logoutUser);
+    }
+
+    function populateUpdateModal(index) {
+        const product = storedProducts[index];
+    
+        // Populate the modal fields based on the product details
+        document.getElementById('updatedProductIndex').value = index;
+        document.getElementById('updatedProductName').value = product.name;
+        document.getElementById('updatedProductPrice').value = product.price;
+        document.getElementById('updatedFileInput').value = ''; // Clear file input
+    }
+    
+    function updateProduct() {
+        const updatedProductIndex = document.getElementById('updatedProductIndex').value;
+        const updatedProductName = document.getElementById('updatedProductName').value;
+        const updatedProductPrice = document.getElementById('updatedProductPrice').value;
+        const updatedProductImage = document.getElementById('updatedFileInput').files[0];
+    
+        if (updatedProductIndex !== '' && !isNaN(updatedProductIndex)) {
+            const index = parseInt(updatedProductIndex);
+    
+            // Update the product details
+            storedProducts[index].name = updatedProductName;
+            storedProducts[index].price = parseFloat(updatedProductPrice);
+    
+            // Update the image only if a new image is selected
+            if (updatedProductImage) {
+                storedProducts[index].imageUrl = URL.createObjectURL(updatedProductImage);
+            }
+    
+            // Save the updated products array to local storage
+            localStorage.setItem('products', JSON.stringify(storedProducts));
+    
+            // Display the updated list of products
+            displayProducts();
+    
+            // Close the update product modal
+            $('#updateProductModal').modal('hide');
+        } else {
+            alert('Invalid product index.');
+        }
     }

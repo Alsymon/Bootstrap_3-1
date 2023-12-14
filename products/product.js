@@ -5,6 +5,13 @@ displayProducts();
 
 document.getElementById('btnAddProduct').addEventListener('click', addProduct);
 
+function generateUniqueId() {
+    // Implement a function to generate a unique ID
+    // You can use libraries like uuid or generate it manually based on your needs
+    // For simplicity, let's use the current timestamp
+    return new Date().getTime().toString();
+}
+
 function addProduct() {
   const productName = document.getElementById('productName').value;
   const productPrice = document.getElementById('productPrice').value;
@@ -20,6 +27,7 @@ function addProduct() {
 
   // Add the new product to the array
   storedProducts.push({
+    id: generateUniqueId(),
     name: productName,
     price: parseFloat(productPrice),
     imageUrl: URL.createObjectURL(productImage) // Create a URL for the selected image
@@ -36,6 +44,47 @@ function addProduct() {
   // Display the updated list of products
   displayProducts();
 }
+
+/*function addProduct() {
+    const productName = document.getElementById('productName').value;
+    const productPrice = document.getElementById('productPrice').value;
+    const fileInput = document.getElementById('fileInput');
+    const productImage = fileInput.files[0];
+
+    if (!productName || !productPrice || !productImage) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    // Assuming productPrice is a number, you may want to validate it further
+
+    // Convert the image to base64
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        // Add the new product to the array
+        storedProducts.push({
+            id: generateUniqueId(),
+            name: productName,
+            price: parseFloat(productPrice),
+            imageUrl: event.target.result // Use the base64 representation
+        });
+
+        // Save the updated products array to local storage
+        localStorage.setItem('products', JSON.stringify(storedProducts));
+
+        // Clear form fields
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        fileInput.value = '';
+
+        // Display the updated list of products
+        displayProducts();
+    };
+
+    // Read the image as a data URL (base64)
+    reader.readAsDataURL(productImage);
+}
+*/
 
 
 function displayProducts() {
@@ -63,8 +112,9 @@ function displayProducts() {
                         <div class="card-footer d-flex justify-content-between">
                             <div class="d-flex flex-column align-items-center mb-3">
                                 <button class="btn btn-danger" onclick="deleteProduct(${index})">Delete Product</button>
-                                <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
-                            </div>
+                               <button type="button" class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#updateProductModal" onclick="populateUpdateModal(${index})">Update Product</button>
+                                 
+                                </div>
                             <div class="d-flex flex-column align-items-center">
                             <button type="button" class="btn btn-outline-success" onclick="openModal(${index})">Add to Cart</button>
                                 <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
@@ -82,6 +132,52 @@ function displayProducts() {
 }
   // Call the function to display products
   displayProducts();
+
+  // ... Your existing code ...
+
+  function populateUpdateModal(index) {
+    const product = storedProducts[index];
+
+    // Populate the modal fields based on the product details
+    document.getElementById('updatedProductIndex').value = index;
+    document.getElementById('updatedProductName').value = product.name;
+    document.getElementById('updatedProductPrice').value = product.price;
+    document.getElementById('updatedFileInput').value = ''; // Clear file input
+}
+
+function updateProduct() {
+    const updatedProductIndex = document.getElementById('updatedProductIndex').value;
+    const updatedProductName = document.getElementById('updatedProductName').value;
+    const updatedProductPrice = document.getElementById('updatedProductPrice').value;
+    const updatedProductImage = document.getElementById('updatedFileInput').files[0];
+
+    if (updatedProductIndex !== '' && !isNaN(updatedProductIndex)) {
+        const index = parseInt(updatedProductIndex);
+
+        // Update the product details
+        storedProducts[index].name = updatedProductName;
+        storedProducts[index].price = parseFloat(updatedProductPrice);
+
+        // Update the image only if a new image is selected
+        if (updatedProductImage) {
+            storedProducts[index].imageUrl = URL.createObjectURL(updatedProductImage);
+        }
+
+        // Save the updated products array to local storage
+        localStorage.setItem('products', JSON.stringify(storedProducts));
+
+        // Display the updated list of products
+        displayProducts();
+
+        // Close the update product modal
+        $('#updateProductModal').modal('hide');
+    } else {
+        alert('Invalid product index.');
+    }
+}
+
+
+
 
 // The rest of your code for deleting and updating products remains unchanged
 
@@ -127,7 +223,7 @@ let deleteButtons = document.querySelectorAll(".btn-danger");
     function logoutUser() {
         // Remove the logged-in user information from local storage
         localStorage.removeItem('loggedInUser');
-        
+        alert('Logout Successful.');
         // Redirect to the login page
         window.location.href = '../login/login.html';
     }
