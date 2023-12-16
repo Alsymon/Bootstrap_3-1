@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Check if the purchase data has the expected structure
                 if (finalPurchaseData && finalPurchaseData.name && finalPurchaseData.price && finalPurchaseData.quantity) {
                     salesData.push(finalPurchaseData);
-                } else {
-                    console.error('Invalid or missing purchase data:', finalPurchaseData);
                 }
             } else {
                 console.error('Invalid purchase data:', purchaseData);
@@ -48,3 +46,51 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('salesContainer not found.');
     }
 });
+
+
+function displayPurchasedProducts() {
+    // Get all keys from local storage
+    const keys = Object.keys(localStorage);
+
+    // Check if there are any purchases
+    if (keys.length === 0) {
+        document.getElementById('purchasedProducts').innerHTML = '<p>No purchases found.</p>';
+        return;
+    }
+
+    // Prepare HTML to display purchased products
+    let html = '<h2>Purchased Products</h2>';
+
+    // Iterate through local storage keys
+    keys.forEach(key => {
+        // Check if the key represents a purchase
+        if (key.startsWith('purchase_')) {
+            const purchaseData = JSON.parse(localStorage.getItem(key));
+            if (purchaseData) {
+
+                
+                // Loop through purchased items in the purchaseData
+                for (const itemId in purchaseData.items) {
+                    if (purchaseData.items.hasOwnProperty(itemId)) {
+                        const item = purchaseData.items[itemId];
+                        html += `<p><strong>Product Name:</strong> ${item.name}</p>
+                                 <p><strong>Price:</strong> ${item.price}</p>
+                                 <p><strong>Quantity:</strong> ${item.quantity}</p>
+                                 <p><strong>Total:</strong> ₱${(item.price * item.quantity).toFixed(2)}</p>
+                                 <hr>`;
+                    }
+                }
+
+                html += `</div>`;
+            } else {
+                console.log(`Error: Could not find details for purchase ID ${key}`);
+            }
+        }
+    });
+
+    // Update the HTML content of the purchasedProducts div
+    document.getElementById('purchasedProducts').innerHTML = html;
+}
+
+// Call this function to display purchased products
+displayPurchasedProducts();

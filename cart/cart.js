@@ -109,9 +109,7 @@ function updateCartDisplay() {
                         <div class="d-flex flex-column align-items-center">
                             <button class="btn btn-danger mb-2" onclick="deleteFromCart('${cartItemId}')">Remove</button>
                         </div>
-                        <div class="d-flex flex-column align-items-center">
-                        <button class="btn btn-success" onclick="makePurchase()">Buy</button>
-                    </div>
+                 
                         <div class="d-flex flex-column align-items-center">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-outline-danger" onclick="decreaseQuantity('${cartItemId}')">-</button>
@@ -146,7 +144,7 @@ function makePurchase() {
         localStorage.setItem('salesData', JSON.stringify(salesData));
 
         // Clear the cart data after making a purchase
-        cartData = {}; // Reset the cart data
+
         localStorage.removeItem('cart');
 
         // Update the cart display
@@ -235,7 +233,7 @@ function displayProducts() {
                                 </div>
                             <div class="d-flex flex-column align-items-center">
                             <button type="button" class="btn btn-outline-success" onclick="openModal(${index})">Add to Cart</button>
-                                <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
+                            <button type="button" class="btn btn-outline-success" onclick="openModalForProductInfo(${index})">See Info</button>
 
                         </div>
                     </div>
@@ -388,18 +386,31 @@ function buyProductWithQuantity() {
         return;
     }
 
-    // Store the purchased product information in cartData
+    // Generate a unique purchase ID
+    const purchaseId = `purchase_${new Date().getTime()}`;
+
+    // Get existing sales data from local storage
+    const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+
+    // Store the purchased product information with a common structure
     const purchasedItem = {
-        name: selectedProduct.name,
-        price: selectedProduct.price,
-        quantity: quantity,
+        id: purchaseId,
+        items: {
+            [selectedProduct.id]: {
+                name: selectedProduct.name,
+                price: selectedProduct.price,
+                quantity: quantity,
+            }
+        },
+        timestamp: new Date().getTime(),
     };
 
-    // Use a unique key for each purchase, you can customize this based on your needs
-    const purchaseKey = `purchase_${new Date().getTime()}`;
+    // Save the purchased item to local storage
+    localStorage.setItem(purchaseId, JSON.stringify(purchasedItem));
 
-    // Save the purchased item to cartData
-    cartData[purchaseKey] = purchasedItem;
+    // Save the purchase key in the 'salesData' array
+    salesData.push(purchasedItem);
+    localStorage.setItem('salesData', JSON.stringify(salesData));
 
     // Optionally, you can display a confirmation message to the user
     alert(`Item "${selectedProduct.name}" (Quantity: ${quantity}) added to cart successfully!`);
@@ -416,3 +427,23 @@ function resetModalContent() {
     document.getElementById('modalProductPrice').textContent = '';
     document.getElementById('quantityInput').value = '';
 }
+
+function openModalForProductInfo(index) {
+    console.log("Opening modal for index:", index);
+    selectedProduct = storedProducts[index];
+
+    // Set the content of the modal dynamically based on the selected product
+    const modalTitle = document.getElementById('productInfoModalLabel');
+    const modalBody = document.querySelector('.info');
+
+    modalTitle.textContent = `Product Information - ${selectedProduct.name}`;
+    modalBody.innerHTML = `
+        <p><strong>Name:</strong> ${selectedProduct.name}</p>
+        <p><strong>Price:</strong> ₱${selectedProduct.price.toFixed(2)}</p>
+        <!-- Add more information as needed -->
+    `;
+
+    // Show the modal
+    $('#productInfoModal').modal('show');
+}
+

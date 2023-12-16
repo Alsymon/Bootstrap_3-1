@@ -1,5 +1,5 @@
 const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-const cartData = JSON.parse(localStorage.getItem('cart')) || {};
+
 // Display existing products on page load
 displayProducts();
 
@@ -46,9 +46,9 @@ function addProduct() {
   $('#yourModalId').modal('hide');
 
   alert('Product added successfully!');
-}
+} 
 
-/*function addProduct() {
+/* function addProduct() {
     const productName = document.getElementById('productName').value;
     const productPrice = document.getElementById('productPrice').value;
     const fileInput = document.getElementById('fileInput');
@@ -86,8 +86,8 @@ function addProduct() {
 
     // Read the image as a data URL (base64)
     reader.readAsDataURL(productImage);
-}
-*/
+} */
+
 
 
 function displayProducts() {
@@ -123,7 +123,7 @@ function displayProducts() {
                                 </div>
                             <div class="d-flex flex-column align-items-center">
                             <button type="button" class="btn btn-outline-success" onclick="openModal(${index})">Add to Cart</button>
-                                <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#productInfoModal${index + 1}">See Info</button>
+                            <button type="button" class="btn btn-outline-success" onclick="openModalForProductInfo(${index})">See Info</button>
 
                         </div>
                     </div>
@@ -167,7 +167,11 @@ function updateTotalPrice() {
     // Update the total price based on the quantity
     const totalPrice = (quantity * selectedProduct.price).toFixed(2);
     document.getElementById('modalTotalPrice').textContent = totalPrice;
-}
+}  
+
+// Assume you've already declared and initialized cartData globally
+const cartData = JSON.parse(localStorage.getItem('cart')) || {};
+
 function buyProductWithQuantity() {
     const quantityInput = document.getElementById('quantityInput');
     const quantity = parseInt(quantityInput.value);
@@ -177,18 +181,31 @@ function buyProductWithQuantity() {
         return;
     }
 
-    // Store the purchased product information in cartData
+    // Generate a unique purchase ID
+    const purchaseId = `purchase_${new Date().getTime()}`;
+
+    // Get existing sales data from local storage
+    const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+
+    // Store the purchased product information with a common structure
     const purchasedItem = {
-        name: selectedProduct.name,
-        price: selectedProduct.price,
-        quantity: quantity,
+        id: purchaseId,
+        items: {
+            [selectedProduct.id]: {
+                name: selectedProduct.name,
+                price: selectedProduct.price,
+                quantity: quantity,
+            }
+        },
+        timestamp: new Date().getTime(),
     };
 
-    // Use a unique key for each purchase, you can customize this based on your needs
-    const purchaseKey = `purchase_${new Date().getTime()}`;
+    // Save the purchased item to local storage
+    localStorage.setItem(purchaseId, JSON.stringify(purchasedItem));
 
-    // Save the purchased item to cartData
-    cartData[purchaseKey] = purchasedItem;
+    // Save the purchase key in the 'salesData' array
+    salesData.push(purchasedItem);
+    localStorage.setItem('salesData', JSON.stringify(salesData));
 
     // Optionally, you can display a confirmation message to the user
     alert(`Item "${selectedProduct.name}" (Quantity: ${quantity}) added to cart successfully!`);
@@ -199,6 +216,40 @@ function buyProductWithQuantity() {
     // Close the modal
     $('#quantityModal').modal('hide');
 }
+function makePurchase() {
+    // Check if the cart is not empty
+    if (Object.keys(cartData).length > 0) {
+        // Generate a unique purchase ID
+        const purchaseId = `purchase_${new Date().getTime()}`;
+
+        // Calculate the total price
+        let totalPrice = 0;
+        for (const productId in cartData) {
+            const product = cartData[productId];
+            totalPrice += product.quantity * product.price;
+        }
+
+        // Save the cart data along with the total price in local storage
+        const purchaseData = {
+            cart: cartData,
+            totalPrice: totalPrice.toFixed(2), // Assuming 2 decimal places for currency
+        };
+        localStorage.setItem(purchaseId, JSON.stringify(purchaseData));
+
+        // Optionally, you can also save the purchase ID in an array for easier retrieval
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        salesData.push(purchaseId);
+        localStorage.setItem('salesData', JSON.stringify(salesData));
+
+        // Clear the cart data after making a purchase
+        cartData = {}; // Reset the cart data
+        localStorage.removeItem('cart');
+
+        // Update the cart display
+        updateCartDisplay();
+    } 
+}
+
 
 function resetModalContent() {
     document.getElementById('modalProductName').textContent = '';
@@ -217,38 +268,53 @@ function resetModalContent() {
     document.getElementById('updatedFileInput').value = ''; // Clear file input
 }
 
-function updateProduct() {
-    const updatedProductIndex = document.getElementById('updatedProductIndex').value;
-    const updatedProductName = document.getElementById('updatedProductName').value;
-    const updatedProductPrice = document.getElementById('updatedProductPrice').value;
-    const updatedProductImage = document.getElementById('updatedFileInput').files[0];
-
-    if (updatedProductIndex !== '' && !isNaN(updatedProductIndex)) {
-        const index = parseInt(updatedProductIndex);
-
-        // Update the product details
-        storedProducts[index].name = updatedProductName;
-        storedProducts[index].price = parseFloat(updatedProductPrice);
-
-        // Update the image only if a new image is selected
-        if (updatedProductImage) {
-            storedProducts[index].imageUrl = URL.createObjectURL(updatedProductImage);
+    function updateProduct() {
+        const updatedProductIndex = document.getElementById('updatedProductIndex').value;
+        const updatedProductName = document.getElementById('updatedProductName').value;
+        const updatedProductPrice = document.getElementById('updatedProductPrice').value;
+        const updatedProductImage = document.getElementById('updatedFileInput').files[0];
+    
+        if (updatedProductIndex !== '' && !isNaN(updatedProductIndex)) {
+            const index = parseInt(updatedProductIndex);
+    
+            // Update the product details
+            storedProducts[index].name = updatedProductName;
+            storedProducts[index].price = parseFloat(updatedProductPrice);
+    
+            // Update the image only if a new image is selected
+            if (updatedProductImage) {
+                // Convert the updated image to base64
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    storedProducts[index].imageUrl = e.target.result;
+    
+                    // Save the updated products array to local storage
+                    localStorage.setItem('products', JSON.stringify(storedProducts));
+    
+                    // Display the updated list of products
+                    displayProducts();
+    
+                    // Close the update product modal
+                    $('#updateProductModal').modal('hide');
+                    alert('Updated successfully!');
+                };
+    
+                reader.readAsDataURL(updatedProductImage);
+            } else {
+                // Save the updated products array to local storage without changing the image
+                localStorage.setItem('products', JSON.stringify(storedProducts));
+    
+                // Display the updated list of products
+                displayProducts();
+    
+                // Close the update product modal
+                $('#updateProductModal').modal('hide');
+                alert('Updated successfully!');
+            }
+        } else {
+            alert('Invalid product index.');
         }
-
-        // Save the updated products array to local storage
-        localStorage.setItem('products', JSON.stringify(storedProducts));
-
-        // Display the updated list of products
-        displayProducts();
-
-        // Close the update product modal
-        $('#updateProductModal').modal('hide');
-        alert('Updated successfully!');
-    } else {
-        alert('Invalid product index.');
     }
-}
-
 
 
 
@@ -385,4 +451,23 @@ function updateCartDisplay() {
        
         
     }
+}
+
+function openModalForProductInfo(index) {
+    console.log("Opening modal for index:", index);
+    selectedProduct = storedProducts[index];
+
+    // Set the content of the modal dynamically based on the selected product
+    const modalTitle = document.getElementById('productInfoModalLabel');
+    const modalBody = document.querySelector('.info');
+
+    modalTitle.textContent = `Product Information - ${selectedProduct.name}`;
+    modalBody.innerHTML = `
+        <p><strong>Name:</strong> ${selectedProduct.name}</p>
+        <p><strong>Price:</strong> ₱${selectedProduct.price.toFixed(2)}</p>
+        <!-- Add more information as needed -->
+    `;
+
+    // Show the modal
+    $('#productInfoModal').modal('show');
 }
